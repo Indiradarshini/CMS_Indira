@@ -19,6 +19,7 @@ public class CMSSeatsDAOImpl implements CMSSeatsDAO {
 		this.seatAvailability = seatAvailability;
 	}
 
+	@Override
 	public SeatAvailability getavailability() {
 		String query1 = "SELECT COUNT(status) FROM cmsseats WHERE status = 'empty'";
 		String query2 = "SELECT COUNT(status) FROM cmsseats WHERE status = 'blocked'";

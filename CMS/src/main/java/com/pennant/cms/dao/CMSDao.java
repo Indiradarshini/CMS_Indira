@@ -1,11 +1,17 @@
 package com.pennant.cms.dao;
 
+import java.util.List;
+
+import com.pennant.cms.models.Seat;
+
 public interface CMSDao {
 
-	public int getBlockedCount();
+	boolean updateSeatsReserved(long userid, int seatno);
 
-	public int getFreeCount();
+	boolean updateSeatsEmpty(int seatno);
 
-	public boolean bookSeat();
+	boolean updateSeatsEmptyOnTimeOver();
+
+	List<Seat> getAllSeats();
 
 }

@@ -37,6 +37,7 @@ public class CMSDaoImpl implements CMSDao {
 		return false;
 	}
 
+	@Override
 	public boolean updateSeatsReserved(long userid, int seatno) {
 		String sql = "Update cmsseats set userid= :userid, blockedtime = :blockedtime, status = :status where seatno = :seatno";
 		MapSqlParameterSource params = new MapSqlParameterSource();
@@ -52,6 +53,7 @@ public class CMSDaoImpl implements CMSDao {
 
 	}
 
+	@Override
 	public boolean updateSeatsEmpty(int seatno) {
 		String sql = "Update cmsseats set userid= :userid, blockedtime = :blockedtime, status = :status where seatno = :seatno";
 		MapSqlParameterSource params = new MapSqlParameterSource();
@@ -67,6 +69,7 @@ public class CMSDaoImpl implements CMSDao {
 
 	}
 
+	@Override
 	public boolean updateSeatsEmptyOnTimeOver() {
 		String sql = "UPDATE cmsseats SET userid = :userid, blockedtime = :blockedtime, status = :status WHERE status = 'blocked' and (blockedtime IS NULL OR (CURRENT_TIMESTAMP - blockedtime) > INTERVAL '5 minutes')";
 
@@ -83,20 +86,6 @@ public class CMSDaoImpl implements CMSDao {
 	}
 
 	@Override
-	public int getBlockedCount() {
-		return 0;
-	}
-
-	@Override
-	public int getFreeCount() {
-		return 0;
-	}
-
-	@Override
-	public boolean bookSeat() {
-		return false;
-	}
-
 	public List<Seat> getAllSeats() {
 		String sql = "Select * from cmsseats order by seatno";
 
