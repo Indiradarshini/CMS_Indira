@@ -3,14 +3,15 @@ package com.pennant.cms.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pennant.cms.dao.CMSDao;
 import com.pennant.cms.dao.CMSSeatsDAO;
-import com.pennant.cms.dao.impl.CMSDaoImpl;
-import com.pennant.cms.dao.impl.CMSUserDaoImpl;
+import com.pennant.cms.dao.CMSUserDao;
 import com.pennant.cms.models.AuthUser;
 import com.pennant.cms.models.Seat;
 import com.pennant.cms.models.SeatAvailability;
@@ -20,22 +21,22 @@ import com.pennant.cms.scheduler.SchedulerSeats;
 @RestController
 public class CmsController {
 
-	private CMSUserDaoImpl cMSUserDaoImpl;
-	private CMSDaoImpl cMSDaoImpl;
+	private CMSUserDao cMSUserDao;
+	private CMSDao cMSDao;
 	private CMSSeatsDAO cMSSeatsDAO;
 
 	@Autowired
-	public CmsController(CMSUserDaoImpl cMSUserDaoImpl, CMSDaoImpl cMSDaoImpl, CMSSeatsDAO cMSSeatsDAO) {
-		this.cMSUserDaoImpl = cMSUserDaoImpl;
-		this.cMSDaoImpl = cMSDaoImpl;
+	public CmsController(CMSUserDao cMSUserDaoImpl, CMSDao cMSDao, CMSSeatsDAO cMSSeatsDAO) {
+		this.cMSUserDao = cMSUserDaoImpl;
+		this.cMSDao = cMSDao;
 		this.cMSSeatsDAO = cMSSeatsDAO;
-		SchedulerSeats seatsSchedule = new SchedulerSeats(cMSDaoImpl);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public User admin(@RequestBody AuthUser user) {
 
-		User user1 = cMSUserDaoImpl.getUser(user.getUsername(), user.getPassword());
+		User user1 = cMSUserDao.getUser(user.getUsername(), user.getPassword());
 
 		if (user1 != null) {
 			return user1;
@@ -43,59 +44,59 @@ public class CmsController {
 		return new User();
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/empty", method = RequestMethod.POST)
 	public String empty(@RequestBody Seat seat) {
 
-		boolean result = cMSDaoImpl.updateSeatsEmpty(seat.getSeatno());
+		boolean result = cMSDao.updateSeatsEmpty(seat.getSeatno());
 
 		return result + " ";
 
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/reserved", method = RequestMethod.POST)
 	public String reserved(@RequestBody Seat seat) {
 
-		boolean result = cMSDaoImpl.updateSeatsReserved(seat.getUserid(), seat.getSeatno());
+		boolean result = cMSDao.updateSeatsReserved(seat.getUserid(), seat.getSeatno());
 
 		return result + " ";
 
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/blocked", method = RequestMethod.POST)
 	public String blocked(@RequestBody Seat seat) {
 
-		boolean result = cMSDaoImpl.updateSeatsBlocked(seat.getUserid(), seat.getSeatno());
+		boolean result = cMSDao.updateSeatsBlocked(seat.getUserid(), seat.getSeatno());
 
 		return result + " ";
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/getAllSeats", method = RequestMethod.GET)
 	public List<Seat> getAllSeats() {
 
-		List<Seat> result = cMSDaoImpl.getAllSeats();
+		List<Seat> result = cMSDao.getAllSeats();
 
 		return result;
 
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/updateSeatsEmptyOnTimeOver", method = RequestMethod.GET)
 	public String updateSeatsEmptyOnTimeOver() {
 
-		boolean result = cMSDaoImpl.updateSeatsEmptyOnTimeOver();
+		boolean result = cMSDao.updateSeatsEmptyOnTimeOver();
 
 		return result + " ";
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "/seatAvailability", method = RequestMethod.GET)
 	public SeatAvailability status() {
 		SeatAvailability seatAvail = cMSSeatsDAO.getavailability();
 		return seatAvail;
 
 	}
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public void seats() {
-
-	}
-
 }

@@ -23,6 +23,7 @@ public class CMSDaoImpl implements CMSDao {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
+	@Override
 	public boolean updateSeatsBlocked(long userid, int seatno) {
 		String sql = "Update cmsseats set userid= :userid, blockedtime = :blockedtime, status = :status where seatno = :seatno";
 		MapSqlParameterSource params = new MapSqlParameterSource();

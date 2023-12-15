@@ -14,4 +14,6 @@ public interface CMSDao {
 
 	List<Seat> getAllSeats();
 
+	boolean updateSeatsBlocked(long userid, int seatno);
+
 }
