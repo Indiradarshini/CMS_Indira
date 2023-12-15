@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pennant.cms.dao.CMSSeatsDAO;
 import com.pennant.cms.dao.impl.CMSDaoImpl;
 import com.pennant.cms.dao.impl.CMSUserDaoImpl;
+import com.pennant.cms.models.AuthUser;
 import com.pennant.cms.models.Seat;
 import com.pennant.cms.models.SeatAvailability;
 import com.pennant.cms.models.User;
@@ -23,23 +24,23 @@ public class CmsController {
 	private CMSDaoImpl cMSDaoImpl;
 	private CMSSeatsDAO cMSSeatsDAO;
 
-
 	@Autowired
 	public CmsController(CMSUserDaoImpl cMSUserDaoImpl, CMSDaoImpl cMSDaoImpl, CMSSeatsDAO cMSSeatsDAO) {
 		this.cMSUserDaoImpl = cMSUserDaoImpl;
 		this.cMSDaoImpl = cMSDaoImpl;
 		this.cMSSeatsDAO = cMSSeatsDAO;
-		SchedulerSeats seatsSchedule = new SchedulerSeats();
+		SchedulerSeats seatsSchedule = new SchedulerSeats(cMSDaoImpl);
 	}
 
-	@RequestMapping(value = "/admin", method = RequestMethod.POST)
-	public User admin(@RequestBody User user) {
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	public User admin(@RequestBody AuthUser user) {
 
 		User user1 = cMSUserDaoImpl.getUser(user.getUsername(), user.getPassword());
 
-		System.out.println(user1.getName());
-
-		return user1;
+		if (user1 != null) {
+			return user1;
+		}
+		return new User();
 	}
 
 	@RequestMapping(value = "/empty", method = RequestMethod.POST)
@@ -72,11 +73,11 @@ public class CmsController {
 	public List<Seat> getAllSeats() {
 
 		List<Seat> result = cMSDaoImpl.getAllSeats();
-		
+
 		return result;
-		
+
 	}
-	
+
 	@RequestMapping(value = "/updateSeatsEmptyOnTimeOver", method = RequestMethod.GET)
 	public String updateSeatsEmptyOnTimeOver() {
 

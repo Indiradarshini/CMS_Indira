@@ -84,24 +84,21 @@ public class CMSDaoImpl implements CMSDao {
 
 	@Override
 	public int getBlockedCount() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getFreeCount() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public boolean bookSeat() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public List<Seat> getAllSeats() {
-		String sql = "Select * from cmsseats order by status";
+		String sql = "Select * from cmsseats order by seatno";
 
 		RowMapper<Seat> rowMapper = (resultSet, rowNum) -> {
 			Seat seat = new Seat();

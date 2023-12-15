@@ -2,12 +2,15 @@ package com.pennant.cms.models;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class User {
 
 	private long id;
 	private long userid;
 	private String name;
 	private String username;
+	@JsonIgnore
 	private String password;
 	private int otp;
 	private Date otpexp;
