@@ -6,27 +6,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pennant.cms.dao.CMSSeatsDAO;
 import com.pennant.cms.dao.impl.CMSUserDaoImpl;
+import com.pennant.cms.models.SeatAvailability;
 import com.pennant.cms.models.User;
+import com.pennant.cms.scheduler.SchedulerSeats;
 
 @RestController
 public class CmsController {
 
 	private CMSUserDaoImpl cMSUserDaoImpl;
-	
+	private CMSSeatsDAO cMSSeatsDAO;
+
 	@Autowired
-	public CmsController(CMSUserDaoImpl cMSUserDaoImpl) {
-		this.cMSUserDaoImpl=cMSUserDaoImpl;
+	public CmsController(CMSUserDaoImpl cMSUserDaoImpl, CMSSeatsDAO cMSSeatsDAO) {
+		this.cMSUserDaoImpl = cMSUserDaoImpl;
+		this.cMSSeatsDAO = cMSSeatsDAO;
+		SchedulerSeats seatsSchedule = new SchedulerSeats();
+
 	}
-	
-	@RequestMapping(value = "/admin", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public User admin(@RequestBody User user) {
-		
-		User user1 = cMSUserDaoImpl.getUser(user.getUsername(),user.getPassword());
-		
+		System.out.println("hii");
+
+		User user1 = cMSUserDaoImpl.getUser(user.getUsername(), user.getPassword());
+
 		System.out.println(user1.getName());
-		
+
 		return user1;
 	}
-	
+
+	@RequestMapping(value = "/seatAvailability", method = RequestMethod.GET)
+	public SeatAvailability status() {
+		SeatAvailability seatAvail = cMSSeatsDAO.getavailability();
+		return seatAvail;
+
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public void seats() {
+
+	}
 }
