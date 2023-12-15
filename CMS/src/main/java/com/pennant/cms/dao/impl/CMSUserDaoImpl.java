@@ -14,13 +14,6 @@ import com.pennant.cms.models.User;
 @Repository
 public class CMSUserDaoImpl implements CMSUserDao {
 
-	/*
-	 * @Autowired private NamedParameterJdbcTemplate jdbcTemplate;
-	 * 
-	 * @Autowired public CMSUserDaoImpl(DataSource dataSource) { this.jdbcTemplate =
-	 * new NamedParameterJdbcTemplate(dataSource); }
-	 */
-
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 
 	@Autowired
