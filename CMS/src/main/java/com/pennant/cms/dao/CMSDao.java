@@ -6,11 +6,19 @@ import com.pennant.cms.models.Seat;
 
 public interface CMSDao {
 
-	boolean updateSeatsReserved(long userid, int seatno);
+	boolean updateSeatsReserved(long userid);
 
-	boolean updateSeatsEmpty(int seatno);
+	public boolean blockedUserUpdate(long userid, int seatno);
+
+	boolean reservedUserUpdate(long userid);
+
+	boolean updateSeatsEmpty(long userid);
+
+	boolean emptyUserUpdate(long userid);
 
 	boolean updateSeatsEmptyOnTimeOver();
+
+	boolean emptyUserUpdateOnTimeOver();
 
 	List<Seat> getAllSeats();
 

@@ -16,7 +16,6 @@ import com.pennant.cms.models.AuthUser;
 import com.pennant.cms.models.Seat;
 import com.pennant.cms.models.SeatAvailability;
 import com.pennant.cms.models.User;
-import com.pennant.cms.scheduler.SchedulerSeats;
 
 @RestController
 public class CmsController {
@@ -39,6 +38,7 @@ public class CmsController {
 		User user1 = cMSUserDao.getUser(user.getUsername(), user.getPassword());
 
 		if (user1 != null) {
+			System.out.println(user1.toString());
 			return user1;
 		}
 		return new User();
@@ -48,19 +48,24 @@ public class CmsController {
 	@RequestMapping(value = "/empty", method = RequestMethod.POST)
 	public String empty(@RequestBody Seat seat) {
 
-		boolean result = cMSDao.updateSeatsEmpty(seat.getSeatno());
-
-		return result + " ";
+		boolean result1 = cMSDao.updateSeatsEmpty(seat.getUserid());
+		boolean result2 = false;
+		if (result1)
+			result2 = cMSDao.emptyUserUpdate(seat.getUserid());
+		return (result1 && result2) + " ";
 
 	}
 
 	@CrossOrigin
 	@RequestMapping(value = "/reserved", method = RequestMethod.POST)
 	public String reserved(@RequestBody Seat seat) {
-
-		boolean result = cMSDao.updateSeatsReserved(seat.getUserid(), seat.getSeatno());
-
-		return result + " ";
+		System.out.println(seat.getUserid());
+		boolean result1 = cMSDao.updateSeatsReserved(seat.getUserid());
+		boolean result2 = false;
+		if (result1)
+			result2 = cMSDao.reservedUserUpdate(seat.getUserid());
+		System.out.println(result1 && result2);
+		return (result1 && result2) + " ";
 
 	}
 
@@ -68,9 +73,11 @@ public class CmsController {
 	@RequestMapping(value = "/blocked", method = RequestMethod.POST)
 	public String blocked(@RequestBody Seat seat) {
 
-		boolean result = cMSDao.updateSeatsBlocked(seat.getUserid(), seat.getSeatno());
-
-		return result + " ";
+		boolean result1 = cMSDao.updateSeatsBlocked(seat.getUserid(), seat.getSeatno());
+		boolean result2 = false;
+		if (result1)
+			result2 = cMSDao.blockedUserUpdate(seat.getUserid(), seat.getSeatno());
+		return (result1 && result2) + " ";
 	}
 
 	@CrossOrigin

@@ -10,7 +10,6 @@ import com.pennant.cms.dao.CMSDao;
 @EnableScheduling
 public class SchedulerSeats {
 
-	
 	private CMSDao cMSDao;
 
 	public SchedulerSeats(CMSDao cMSDao) {
@@ -18,11 +17,14 @@ public class SchedulerSeats {
 		myTask();
 	}
 
-	@Scheduled(fixedRate = 10000) // Run every 2 minutes (in milliseconds)
+	@Scheduled(fixedRate = 120000) // Run every 2 minutes (in milliseconds)
 	public void myTask() {
 		// Your task logic goes here
 		System.out.println("Executing task every 2 minutes");
-		boolean result = cMSDao.updateSeatsEmptyOnTimeOver();
-		System.out.println(result);
+		boolean result1 = cMSDao.updateSeatsEmptyOnTimeOver();
+		boolean result2 = false;
+		if (result1)
+			result2 = cMSDao.emptyUserUpdateOnTimeOver();
+		System.out.println(result1 && result2);
 	}
 }
